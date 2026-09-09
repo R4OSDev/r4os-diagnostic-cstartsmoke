@@ -10,16 +10,20 @@ Projektstruktur seit 0.51.21:
 
 Build:
 
-    cd Code\System\Diagnostics\CStartSmoke
-    ..\..\..\DevTools\Zig\zig.exe build
+    Build.bat (Windows) beziehungsweise ./Build.sh (Linux)
 
 Ergebnis:
 
-    Code\System\Diagnostics\CStartSmoke\zig-out\CSTARTD.R4X
+    zig-out/CSTARTD.R4X
 
 Contract:
 - Build-Profil: `C/R4XStart`
 - R4XStart-Entry: `r4_main`
 - App-Klasse: `console`
-- R4L-Imports: `R4SYS`
+- Platform-API-Imports: `R4SYS`
 - Zielpfad im Image: `C:\R4OS\SOFTWARE\TERMINAL\DIAG\CSTARTD.R4X`
+
+CSTARTD /QUIET fuehrt dieselben ABI-, Import- und VM-Pruefungen aus. Nur
+Erfolgsmeldungen entfallen; Fehler und Exitstatus bleiben unveraendert.
+CLEANUPD nutzt den Modus fuer eine exakte Speicherbilanz ohne neue,
+absichtlich vom Elternterminal ueber den Child-Reap hinaus gehaltene Ausgabe.

@@ -1,10 +1,10 @@
 ﻿# CSTARTD.R4X
 
-`CSTARTD.R4X` is an independent R4OS diagnostic program implemented in Zig.
+`CSTARTD.R4X` is an independent R4OS diagnostic program implemented in C.
 
 ## Package
 
-- Version: `0.1.1`
+- Version: `0.1.2`
 - Image target: `/R4OS/SOFTWARE/TERMINAL/DIAG/CSTARTD.R4X`
 - Image scope: `test`
 - Canonical project manifest: `module.R4MF`
@@ -38,3 +38,8 @@ Detailed German technical notes from the migration are preserved in
 Original R4OS material is licensed under Apache License 2.0. See `LICENSE`
 and `NOTICE`. Any repository-specific external material is documented in
 `THIRD_PARTY_NOTICES.md`.
+
+`/QUIET` runs the same C entry, ABI, import and VM checks, omitting successful
+progress output. Errors remain visible. CleanupDiag uses this mode during
+exact memory measurements because the parent intentionally retains child
+output after reaping. Normal invocation retains all progress messages.
