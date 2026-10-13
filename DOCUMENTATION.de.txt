@@ -14,7 +14,7 @@ Build:
 
 Ergebnis:
 
-    zig-out/CSTARTD.R4X
+    Artifacts/Modules/CStartSmoke/CSTARTD.R4X (Workspace-Build)
 
 Contract:
 - Build-Profil: `C/R4XStart`
@@ -25,5 +25,5 @@ Contract:
 
 CSTARTD /QUIET fuehrt dieselben ABI-, Import- und VM-Pruefungen aus. Nur
 Erfolgsmeldungen entfallen; Fehler und Exitstatus bleiben unveraendert.
-CLEANUPD nutzt den Modus fuer eine exakte Speicherbilanz ohne neue,
+SPECTRA CHECK LIFECYCLE nutzt den Modus fuer eine exakte Speicherbilanz ohne neue,
 absichtlich vom Elternterminal ueber den Child-Reap hinaus gehaltene Ausgabe.
