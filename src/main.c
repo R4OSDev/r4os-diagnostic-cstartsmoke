@@ -14,6 +14,20 @@ R4OS_TEXT(msg_vm_alloc, "C R4SYS VM alloc: OK\r\n");
 R4OS_TEXT(msg_vm_failed, "C R4SYS VM alloc: FAILED\r\n");
 R4OS_TEXT(msg_result, "CSTARTD result: OK\r\n");
 R4OS_TEXT(msg_crlf, "\r\n");
+R4OS_TEXT(msg_stack_ok, "CSTARTD large frame: OK\r\n");
+R4OS_TEXT(msg_stack_failed, "CSTARTD large frame: FAILED\r\n");
+
+static __attribute__((noinline)) int large_stack_frame(void) {
+    volatile uint8_t bytes[384u * 1024u] __attribute__((aligned(8192)));
+    if (((uintptr_t)bytes & 8191u) != 0u) return 0;
+    for (uint32_t page = 0; page < sizeof(bytes) / 4096u; ++page) {
+        bytes[page * 4096u] = (uint8_t)(0x5bu ^ page);
+    }
+    for (uint32_t page = 0; page < sizeof(bytes) / 4096u; ++page) {
+        if (bytes[page * 4096u] != (uint8_t)(0x5bu ^ page)) return 0;
+    }
+    return 1;
+}
 
 _Static_assert(R4XSTART_ABI_MAJOR == 1u, "R4XStart ABI major mismatch");
 _Static_assert(R4XSTART_ABI_MINOR == 1u, "R4XStart ABI minor mismatch");
@@ -29,6 +43,16 @@ int32_t r4_main(const R4XStartContext *ctx, R4Sys *sys) {
         return 1;
     }
     const uint8_t *args = r4xstart_args(ctx);
+    static const char stack_arg[] = "/STACKPROBE";
+    int stack_probe = args != 0 && ctx->args_len == sizeof(stack_arg) - 1u;
+    for (uint32_t i = 0; stack_probe && i < sizeof(stack_arg) - 1u; ++i) {
+        if (args[i] != (uint8_t)stack_arg[i]) stack_probe = 0;
+    }
+    if (stack_probe) {
+        const int ok = large_stack_frame();
+        r4sys_write_cstr(sys, ok ? msg_stack_ok : msg_stack_failed);
+        return ok ? 0 : 1;
+    }
     const int quiet = args != 0 && ctx->args_len == 6u &&
         args[0] == '/' && (args[1] & ~32u) == 'Q' &&
         (args[2] & ~32u) == 'U' && (args[3] & ~32u) == 'I' &&

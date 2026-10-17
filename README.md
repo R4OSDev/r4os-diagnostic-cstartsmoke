@@ -4,7 +4,7 @@
 
 ## Package
 
-- Version: `0.1.2`
+- Version: `0.1.3`
 - Image target: `/R4OS/SOFTWARE/TERMINAL/DIAG/CSTARTD.R4X`
 - Image scope: `test`
 - Canonical project manifest: `module.R4MF`
@@ -43,3 +43,8 @@ and `NOTICE`. Any repository-specific external material is documented in
 progress output. Errors remain visible. CleanupDiag uses this mode during
 exact memory measurements because the parent intentionally retains child
 output after reaping. Normal invocation retains all progress messages.
+
+`/STACKPROBE` explicitly checks one 384-KB local frame with 8-KB alignment
+and volatile page writes/readback. Success prints `CSTARTD large frame: OK`.
+It exercises the freestanding C inline probes and demand stack growth;
+normal invocation and `/QUIET` keep their existing ABI/import/VM checks.
