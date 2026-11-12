@@ -1,29 +1,17 @@
-﻿CSTARTD.R4X
+CSTARTD.R4X
 ===========
 
-CSTARTD.R4X ist die C-R4XStart-Smoke-Diagnose.
+Stand 0.90.80 / Modul 0.1.6
 
-Projektstruktur seit 0.51.21:
-- `build.zig` baut die Diagnose als eigenes SDK-Projekt.
-- `build.zig.zon` bindet `r4os_sdk` als Paket.
-- `module.R4MF` beschreibt Artefakt, Zielpfad, R4L-Imports und Contract.
+Echter C-Rohstart ueber SDK-Adapter R4XStart2 und r4_main2. Unabhaengige feste Start2-/Import-/Query2-Groessen und Callbackoffsets stammen aus Docs/API/Generation2.txt. Reservierte Felder bleiben null; neuere Minorversion wird als Praefix angenommen, 119 Byte abgewiesen. Beide echten Start2-Callbacks werden mit dem Originalrecord aufgerufen. 8192 Byte explizites VM-Reserve/Commit/Release mit Daten-/Alignmentpruefung ersetzen den entfernten alten VM-Wrapper. /STACKPROBE behaelt den 384-KB-Frame mit 8192-Byte-Alignment und seitenweisen Canaries. /QUIET unterdrueckt nur Erfolgsausgabe fuer strenge Eltern-/Ressourcenbilanzen.
 
-Build:
+Build vom Workspace-Root:
+    ./Repositories/Diagnostics/CStartSmoke/Build.sh
+Unter Windows den entsprechenden Build.bat-Starter verwenden.
+Artefakt: Artifacts/Modules/CStartSmoke/CSTARTD.R4X
+Manifest: Repositories/Diagnostics/CStartSmoke/module.R4MF
+Profil: r4os-c-generation2; Klasse console; IMAGE_SCOPE=test.
 
-    Build.bat (Windows) beziehungsweise ./Build.sh (Linux)
-
-Ergebnis:
-
-    Artifacts/Modules/CStartSmoke/CSTARTD.R4X (Workspace-Build)
-
-Contract:
-- Build-Profil: `C/R4XStart`
-- R4XStart-Entry: `r4_main`
-- App-Klasse: `console`
-- Platform-API-Imports: `R4SYS`
-- Zielpfad im Image: `C:\R4OS\SOFTWARE\TERMINAL\DIAG\CSTARTD.R4X`
-
-CSTARTD /QUIET fuehrt dieselben ABI-, Import- und VM-Pruefungen aus. Nur
-Erfolgsmeldungen entfallen; Fehler und Exitstatus bleiben unveraendert.
-SPECTRA CHECK LIFECYCLE nutzt den Modus fuer eine exakte Speicherbilanz ohne neue,
-absichtlich vom Elternterminal ueber den Child-Reap hinaus gehaltene Ausgabe.
+module.R4MF ist die Quelle fuer Version, Imports, Ziel und Einstieg.
+Die Bibliotheks-/API-Vertraege liegen beim jeweiligen Besitzer; das SDK
+setzt weder Berechtigungen noch eine zusaetzliche Runtime voraus.

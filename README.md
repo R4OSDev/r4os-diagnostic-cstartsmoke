@@ -1,10 +1,10 @@
-﻿# CSTARTD.R4X
+# CSTARTD.R4X
 
 `CSTARTD.R4X` is an independent R4OS diagnostic program implemented in C.
 
 ## Package
 
-- Version: `0.1.3`
+- Version: `0.1.6`
 - Image target: `/R4OS/SOFTWARE/TERMINAL/DIAG/CSTARTD.R4X`
 - Image scope: `test`
 - Canonical project manifest: `module.R4MF`
@@ -48,3 +48,5 @@ output after reaping. Normal invocation retains all progress messages.
 and volatile page writes/readback. Success prints `CSTARTD large frame: OK`.
 It exercises the freestanding C inline probes and demand stack growth;
 normal invocation and `/QUIET` keep their existing ABI/import/VM checks.
+
+Generation 2: Start2/Query2.
